@@ -7,6 +7,7 @@ import { MainLayoutComponent } from './common/layouts/main-layout/main-layout.co
     LayoutModule
   ],
   providers: [],
-  bootstrap: [MainLayoutComponent]
+  bootstrap: [MainLayoutComponent],
+  declarations: []
 })
 export class AppModule { }

@@ -1,6 +1,16 @@
 <header>
     <a href="/" class="logo">🍔</a>
     <div class="spacer"></div>
-    <button type="button" class="menu">menu</button>
+    <div class="menu" (click)="toggleMenu()">
+        <span></span>
+    </div>
+
+    <div class="toggle-menu" *ngIf="isMenuToggle">
+        <div class="menu-container">
+            <a class="menu-link" href="#">Menu item</a>
+            <a class="menu-link" href="#">Menu item</a>
+            <a class="menu-link" href="#">Menu item</a>
+        </div>
+    </div>
 
 </header>
