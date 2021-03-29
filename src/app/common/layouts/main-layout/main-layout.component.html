@@ -2,7 +2,9 @@
 <div class="content">
     <section>
         <div class="container">
-            <app-meal-item></app-meal-item>
+            <div class="d-flex wrap">
+                <app-meal-item *ngFor="let recipe of randomRecipe$ | async" [recipe]="recipe"></app-meal-item>
+            </div>
         </div>
     </section>
     <router-outlet></router-outlet>

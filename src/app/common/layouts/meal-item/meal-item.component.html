@@ -1,7 +1,7 @@
 <div class="recipe-card">
     <div id="recipe-card__cover" #recipeCardCover class="recipe-card__cover" (click)="showRecipeInfo()">
         <div class="recipe-card__img">
-            <img [src]="recipe.image" [alt]="recipe.creditText">
+            <img [src]="recipe.image" [alt]="recipe.title">
         </div>
         <div class="recipe-card__cover-details">
             <div id="recipe-card__duration" #recipeCardDuration class="recipe-card__duration">
@@ -33,38 +33,13 @@
             class="recipe-card__content recipe-card__content--active">
             <ul>
                 <span>MAIN:</span>
-                <li> 12 slices day-old white bread, crusts removed</li>
-                <li>2 packages (8 ounces each) cream cheese</li>
-                <li>1 cup fresh or frozen blueberries</li>
-                <li>12 large eggs, lightly beaten</li>
-                <li>2 cups 2% milk</li>
-                <li>1/3 cup maple syrup or honey</li>
-            </ul>
-            <ul>
-                <span>SAUCE:</span>
-                <li>1 cup sugar</li>
-                <li>2 tablespoons cornstarch</li>
-                <li>1 cup water</li>
-                <li>1 cup fresh or frozen blueberries</li>
-                <li>1 tablespoon butter</li>
+                <li *ngFor="let ingridient of recipe.extendedIngredients">{{ingridient.name}}</li>
             </ul>
         </div>
 
         <div id="recipe-card__content--preparations" #preparationsContent class="recipe-card__content">
-            <ul class="preparation-steps">
-                <li>Cut bread into 1-in. cubes; place half in a greased 13x9-in. baking dish. Cut cream cheese into
-                    1-in. cubes; place over bread. Top with blueberries and remaining bread cubes.</li>
-
-                <li>Whisk the eggs, milk and syrup in a large bowl. Pour over bread mixture. Cover and refrigerate for 8
-                    hours or overnight.</li>
-
-                <li>Remove from the refrigerator 30 minutes before baking. Cover and bake at 350° for 30 minutes.
-                    Uncover; bake 25-30 minutes longer or until a knife inserted in center comes out clean.</li>
-
-                <li>Combine the sugar, water and cornstarch until smooth in a small saucepan. Bring to a boil over
-                    medium heat; cook and stir until thickened, 3 minutes. Stir in blueberries; bring to a boil. Reduce
-                    heat and simmer until berries burst, 8-10 minutes. Remove from heat; stir in butter. Serve with
-                    French toast.</li>
+            <ul class="preparation-steps" *ngFor="let inctr of recipe.analyzedInstructions">
+                <li *ngFor="let step of inctr.steps">{{step.step}}</li>
             </ul>
         </div>
     </div>

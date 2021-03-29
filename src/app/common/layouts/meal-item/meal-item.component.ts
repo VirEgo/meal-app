@@ -1,33 +1,18 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { CookingService } from './../../services/cookingService';
-
-interface Recipe {
-  title: string;
-  description: string;
-}
-
+import { Component, ElementRef, ViewChild, Input } from '@angular/core';
+import { CookServiceService } from '../../services/cook-service.service';
+import { Observable } from 'rxjs';
+import { RootObject, Recipe } from './../../../models/recipe.model';
 @Component({
   selector: 'app-meal-item',
   templateUrl: './meal-item.component.html',
   styleUrls: ['./meal-item.component.scss']
 })
-export class MealItemComponent implements OnInit {
+export class MealItemComponent {
+  @Input() recipe: Recipe;
+
   constructor() { }
-  cookingService = CookingService;
   similarRecipe: any = [];
   similarRecipeID: number = 0;
-  recipe: any;
-  ngOnInit() {
-    this.recipe = CookingService.getRandomRecipe()
-      .then(res => res);
-
-    this.similarRecipe = CookingService.getSimilarRecipe(715538)
-      .then(res => res)
-      .then(res => this.similarRecipe = res)
-    console.log(this.similarRecipe);
-
-  }
-
 
 
   @ViewChild('recipeCardCover') recipeCardCover: ElementRef<HTMLElement> | undefined;
@@ -42,41 +27,41 @@ export class MealItemComponent implements OnInit {
   @ViewChild('recipeCardDescription') recipeCardDescription: ElementRef<HTMLElement> | undefined;
 
 
+
+
+
   showRecipeInfo() {
-    this.recipeCardCover != undefined ? this.recipeCardCover.nativeElement.classList.toggle('recipe-card__cover--open') : null
-    this.recipeCardContentContainer != undefined ? this.recipeCardContentContainer.nativeElement.classList.toggle('recipe-card__content-container--open') : null
-    this.recipeCardInfo != undefined ? this.recipeCardInfo.nativeElement.classList.toggle('recipe-card__info--show') : null
-    this.recipeCardDuration != undefined ? this.recipeCardDuration.nativeElement.classList.toggle('recipe-card__duration--show') : null
-    this.recipeCardServings != undefined ? this.recipeCardServings.nativeElement.classList.toggle('recipe-card__servings--show') : null
+    toggleClassName(this.recipeCardCover, 'recipe-card__cover--open');
+    toggleClassName(this.recipeCardContentContainer, 'recipe-card__content-container--open');
+    toggleClassName(this.recipeCardInfo, 'recipe-card__info--show');
+    toggleClassName(this.recipeCardDuration, 'recipe-card__duration--show');
+    toggleClassName(this.recipeCardServings, 'recipe-card__servings--show');
   }
 
   showPreparations() {
-    this.ingredientsTab != undefined ? this.ingredientsTab.nativeElement.classList.remove('active') : null;
-    this.preparationsTab != undefined ? this.preparationsTab.nativeElement.classList.add('active') : null;
-    this.recipeCardContentIngredients != undefined ? this.recipeCardContentIngredients.nativeElement.classList.remove('recipe-card__content--active') : null;
-    this.recipeCardContentPreparations != undefined ? this.recipeCardContentPreparations.nativeElement.classList.add('recipe-card__content--active') : null;
+    toggleClassName(this.ingredientsTab, 'active', 'remove');
+    toggleClassName(this.preparationsTab, 'active', 'add');
+    toggleClassName(this.recipeCardContentIngredients, 'recipe-card__content--active', 'remove');
+    toggleClassName(this.recipeCardContentPreparations, 'recipe-card__content--active', 'add');
   }
+
   showIngridients() {
-    this.ingredientsTab != undefined ? this.ingredientsTab.nativeElement.classList.add('active') : null;
-    this.preparationsTab != undefined ? this.preparationsTab.nativeElement.classList.remove('active') : null;
-    this.recipeCardContentIngredients != undefined ? this.recipeCardContentIngredients.nativeElement.classList.add('recipe-card__content--active') : null;
-    this.recipeCardContentPreparations != undefined ? this.recipeCardContentPreparations.nativeElement.classList.remove('recipe-card__content--active') : null;
-  }
 
-
-
-
-  createMeal(recipe: any) {
-    for (let key in recipe) {
-      this.recipe[key] = recipe[key]
-    }
+    toggleClassName(this.ingredientsTab, 'active', 'add');
+    toggleClassName(this.preparationsTab, 'active', 'remove');
+    toggleClassName(this.recipeCardContentIngredients, 'recipe-card__content--active', 'add');
+    toggleClassName(this.recipeCardContentPreparations, 'recipe-card__content--active', 'remove');
   }
 
   parseHTML(string: string) {
     const parser = new DOMParser();
     let res = parser.parseFromString(string, 'text/html');
     return this.recipeCardDescription != undefined ? this.recipeCardDescription.nativeElement.innerHTML = res.body.innerHTML : null
-
   }
 
+}
+
+
+function toggleClassName(elem: ElementRef<HTMLElement> | undefined, className: string, method: 'add' | 'remove' | 'toggle' = 'toggle') {
+  !!elem && elem.nativeElement.classList[method](className);
 }
