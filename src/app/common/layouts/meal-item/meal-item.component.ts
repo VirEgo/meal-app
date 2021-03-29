@@ -1,4 +1,10 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { CookingService } from './../../services/cookingService';
+
+interface Recipe {
+  title: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-meal-item',
@@ -7,15 +13,22 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 })
 export class MealItemComponent implements OnInit {
   constructor() { }
+  cookingService = CookingService;
+  similarRecipe: any = [];
+  similarRecipeID: number = 0;
+  recipe: any;
   ngOnInit() {
+    this.recipe = CookingService.getRandomRecipe()
+      .then(res => res);
 
-    this.getData()
+    this.similarRecipe = CookingService.getSimilarRecipe(715538)
+      .then(res => res)
+      .then(res => this.similarRecipe = res)
+    console.log(this.similarRecipe);
+
   }
-  private API: string = "6023c5399120411485bec4d98ac8f2e9";
-  // public servings: number = 0;
-  // public title: string = '';
-  public recipe: any = {
-  }
+
+
 
   @ViewChild('recipeCardCover') recipeCardCover: ElementRef<HTMLElement> | undefined;
   @ViewChild('recipeCardInfo') recipeCardInfo: ElementRef<HTMLElement> | undefined;
@@ -36,6 +49,7 @@ export class MealItemComponent implements OnInit {
     this.recipeCardDuration != undefined ? this.recipeCardDuration.nativeElement.classList.toggle('recipe-card__duration--show') : null
     this.recipeCardServings != undefined ? this.recipeCardServings.nativeElement.classList.toggle('recipe-card__servings--show') : null
   }
+
   showPreparations() {
     this.ingredientsTab != undefined ? this.ingredientsTab.nativeElement.classList.remove('active') : null;
     this.preparationsTab != undefined ? this.preparationsTab.nativeElement.classList.add('active') : null;
@@ -49,17 +63,7 @@ export class MealItemComponent implements OnInit {
     this.recipeCardContentPreparations != undefined ? this.recipeCardContentPreparations.nativeElement.classList.remove('recipe-card__content--active') : null;
   }
 
-  getData() {
-    const data = fetch(`https://api.spoonacular.com/recipes/random?apiKey=${this.API}`)
-      .then(res => res.json())
-      .then(res => {
-        this.recipe = res.recipes[0];
-        console.log(this.recipe);
 
-        // this.createMeal(res.recipes[0])
-      });
-
-  }
 
 
   createMeal(recipe: any) {
